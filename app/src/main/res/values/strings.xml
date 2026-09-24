@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">iCloud Photos</string>
+
+    <string name="login_title">Sign in with Apple ID</string>
+    <string name="login_subtitle">Your credentials go directly to Apple. This app never stores your password.</string>
+    <string name="label_apple_id">Apple ID (email)</string>
+    <string name="label_password">Password</string>
+    <string name="action_sign_in">Sign In</string>
+
+    <string name="two_factor_title">Two-Factor Authentication</string>
+    <string name="two_factor_subtitle">Enter the code sent to your trusted device.</string>
+    <string name="label_verification_code">6-digit code</string>
+    <string name="action_verify">Verify</string>
+
+    <string name="gallery_title">Photos</string>
+    <string name="action_sign_out">Sign out</string>
+    <string name="action_retry">Retry</string>
+
+    <string name="empty_gallery">No photos found in this iCloud account.</string>
+</resources>
