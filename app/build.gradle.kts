@@ -11,8 +11,25 @@ android {
         applicationId = "com.icloudandroid"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.1.0"
+        // CI passes -PappVersionCode/-PappVersionName per release tag (see
+        // .github/workflows/release.yml); these are the local-build defaults.
+        versionCode = (project.findProperty("appVersionCode") as String?)?.toIntOrNull() ?: 1
+        versionName = (project.findProperty("appVersionName") as String?) ?: "0.1.0"
+    }
+
+    signingConfigs {
+        // Checked-in on purpose: debug builds must sign identically across every
+        // CI run and local machine, or a downloaded release APK can't be
+        // installed as an update over the previous one (Android requires
+        // matching signatures). This is the standard, non-secret debug key
+        // convention (alias/password "androiddebugkey"/"android"), never used
+        // for a release build.
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
     }
 
     buildTypes {
@@ -25,6 +42,7 @@ android {
         }
         debug {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 

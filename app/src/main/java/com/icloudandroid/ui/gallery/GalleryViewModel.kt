@@ -2,8 +2,10 @@ package com.icloudandroid.ui.gallery
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.icloudandroid.photos.PendingUpload
 import com.icloudandroid.photos.PhotoItem
 import com.icloudandroid.photos.PhotosRepository
+import com.icloudandroid.photos.UploadState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,6 +23,9 @@ class GalleryViewModel(private val repository: PhotosRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GalleryUiState())
     val uiState: StateFlow<GalleryUiState> = _uiState.asStateFlow()
+
+    private val _uploadState = MutableStateFlow<UploadState>(UploadState.Idle)
+    val uploadState: StateFlow<UploadState> = _uploadState.asStateFlow()
 
     private var nextOffset = 0
     private var isFetching = false
@@ -67,5 +72,27 @@ class GalleryViewModel(private val repository: PhotosRepository) : ViewModel() {
                 }
             isFetching = false
         }
+    }
+
+    /** Experimental native upload path; see [com.icloudandroid.photos.UploadApi]. */
+    fun uploadPhotos(uploads: List<PendingUpload>) {
+        if (uploads.isEmpty()) return
+        viewModelScope.launch {
+            var failures = 0
+            uploads.forEachIndexed { index, upload ->
+                _uploadState.value = UploadState.Uploading(index, uploads.size)
+                repository.uploadPhoto(upload).onFailure { failures++ }
+            }
+            _uploadState.value = if (failures == 0) {
+                UploadState.Success
+            } else {
+                UploadState.Failed("$failures of ${uploads.size} upload(s) failed.")
+            }
+            retry()
+        }
+    }
+
+    fun dismissUploadState() {
+        _uploadState.value = UploadState.Idle
     }
 }

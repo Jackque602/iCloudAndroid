@@ -15,12 +15,14 @@ import com.icloudandroid.ui.gallery.GalleryScreen
 import com.icloudandroid.ui.gallery.GalleryViewModel
 import com.icloudandroid.ui.login.LoginScreen
 import com.icloudandroid.ui.login.LoginViewModel
+import com.icloudandroid.ui.upload.UploadWebViewScreen
 import com.icloudandroid.ui.viewer.PhotoViewerScreen
 
 private sealed interface Screen {
     data object Login : Screen
     data class Gallery(val photosServiceUrl: String) : Screen
     data class Viewer(val photosServiceUrl: String, val index: Int) : Screen
+    data class Uploader(val photosServiceUrl: String) : Screen
 }
 
 @Composable
@@ -55,6 +57,7 @@ fun AppNav() {
                     screen = Screen.Login
                 },
                 onOpenPhoto = { index -> screen = Screen.Viewer(current.photosServiceUrl, index) },
+                onOpenUploader = { screen = Screen.Uploader(current.photosServiceUrl) },
             )
         }
 
@@ -69,6 +72,13 @@ fun AppNav() {
             PhotoViewerScreen(
                 items = galleryUiState.items,
                 initialIndex = current.index,
+                onBack = { screen = Screen.Gallery(current.photosServiceUrl) },
+            )
+        }
+
+        is Screen.Uploader -> {
+            UploadWebViewScreen(
+                cookieJar = container.cookieJar,
                 onBack = { screen = Screen.Gallery(current.photosServiceUrl) },
             )
         }

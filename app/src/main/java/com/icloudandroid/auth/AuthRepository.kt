@@ -2,6 +2,7 @@ package com.icloudandroid.auth
 
 import android.content.Context
 import com.icloudandroid.network.HttpClientProvider
+import com.icloudandroid.network.WebViewCookieSync
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -97,6 +98,7 @@ class AuthRepository(context: Context) {
     fun signOut() {
         store.clearAll()
         cookieJar.clear()
+        WebViewCookieSync.clear()
         _state.value = AuthState.AwaitingCredentials
     }
 }

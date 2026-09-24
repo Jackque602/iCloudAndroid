@@ -18,4 +18,16 @@
     <string name="action_retry">Retry</string>
 
     <string name="empty_gallery">No photos found in this iCloud account.</string>
+
+    <string name="upload_title">Upload to iCloud Photos</string>
+    <string name="action_add_photos">Add photos</string>
+    <string name="action_experimental_upload">Experimental in-app upload</string>
+    <string name="experimental_upload_warning_title">Experimental feature</string>
+    <string name="experimental_upload_warning_body">This uploads photos straight from the app using a reverse-engineered iCloud API with no known working reference implementation elsewhere. It may simply fail, or in rare cases create malformed entries in your library. \"Add photos\" (the icloud.com uploader) is the reliable option. Continue anyway?</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="upload_progress">Uploading %1$d of %2$d…</string>
+    <string name="upload_success">Upload complete.</string>
+    <string name="upload_failed">%1$s</string>
+    <string name="action_dismiss">Dismiss</string>
 </resources>

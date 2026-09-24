@@ -65,6 +65,9 @@ class PersistentCookieJar(context: Context) : CookieJar {
     fun hasSessionCookies(): Boolean = store.isNotEmpty()
 
     @Synchronized
+    fun allCookies(): List<Cookie> = store.values.toList()
+
+    @Synchronized
     fun clear() {
         store.clear()
         prefs.edit().clear().apply()
